@@ -1,2 +1,1 @@
-// Reset the buttons position to the original location
-y = ystart
+ui_press = 0

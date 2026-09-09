@@ -29,7 +29,8 @@
 #macro VIEW_Y camera_get_view_y(VIEW)
 
 ///////////////////////////////// GUI
-#macro MENU_BUTTON_ALPHA 0.72
+#macro MENU_BUTTON_ALPHA 0.78
+#macro TEMPLATE_VERSION "v0.0.8"
 // Font
 #macro DEFAULT_FONT "fUbuntu"
 #macro MENU_TITLE_SCALE 0.45

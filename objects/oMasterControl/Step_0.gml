@@ -1,3 +1,31 @@
+// Persistent presentation and debug state.
+ui_time += 1
+if room != ui_last_room {
+    ui_last_room = room
+    ui_room_enter = 0
+}
+ui_room_enter = min(1, ui_room_enter + 0.06)
+
+debugRoom = room_get_name(room)
+debugWindow = string(window_get_width()) + " x " + string(window_get_height())
+debugFPS = round(fps_real)
+debugInput = global.input == KBM ? "Keyboard / Mouse" : "Controller"
+if surface_exists(application_surface) {
+    debugSurface = string(surface_get_width(application_surface)) + " x " + string(surface_get_height(application_surface))
+} else {
+    debugSurface = "waiting"
+}
+
+if keyboard_check_pressed(vk_f2) {
+    debugEnabled = !debugEnabled
+    show_debug_overlay(debugEnabled)
+}
+
+// Settings changed through the video screen or debugger are marked pending until Apply.
+if global.resolution != global.appliedResolution || global.fullscreen != global.appliedFullscreen {
+    global.videoDirty = true
+}
+
 #region Delta, Background Update, FPS Update
 // Delta Time Update
 global.deltaActual = delta_time / 1000000

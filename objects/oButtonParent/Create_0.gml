@@ -1,12 +1,14 @@
-// Initialize a variable to pass text through as a string
+// Shared menu-button state.
 buttonText = ""
-
-// Run only once flag
 runOnce = false
-
-// Check if the button is hovered (MOUSE)
 mouseHovered = false
-
-// Check if the button is controllerHovered (CONTROLLER)
 controllerHovered = false
 controllerHoveredBase = controllerHovered
+
+// Presentation state is deliberately independent of x/y so hover animation
+// never moves the hitbox away from the cursor.
+ui_hover = 0
+ui_press = 0
+ui_intro = 0
+ui_intro_delay = clamp(y / 140, 0, 8)
+ui_phase = random(1000)

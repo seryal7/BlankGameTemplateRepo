@@ -7,7 +7,7 @@ function updateVideo() {
         [3840, 2160]
     ]
 
-    global.resolution = clamp(global.resolution, 0, array_length(_sizes) - 1)
+    global.resolution = clamp(round(global.resolution), 0, array_length(_sizes) - 1)
 
     var _target_w = _sizes[global.resolution][0]
     var _target_h = _sizes[global.resolution][1]
@@ -15,20 +15,30 @@ function updateVideo() {
     global.width = _target_w
     global.height = _target_h
 
-    // The game always renders against the same 1920x1080 UI/game coordinate space.
+    // UI and game code always use the authored 1920 x 1080 coordinate space.
     display_set_gui_size(BASE_W, BASE_H)
+
+    // The selected resolution is the render/output resolution. This makes the
+    // setting meaningful in both windowed and fullscreen modes.
+    application_surface_enable(true)
+    if surface_exists(application_surface) {
+        if surface_get_width(application_surface) != _target_w || surface_get_height(application_surface) != _target_h {
+            surface_resize(application_surface, _target_w, _target_h)
+        }
+    }
+
+    // Rebuild the OS window cleanly. Going windowed first prevents GameMaker
+    // from retaining a stale fullscreen/window size after a resolution change.
+    window_set_fullscreen(false)
+    window_set_size(_target_w, _target_h)
+    window_center()
 
     if global.fullscreen {
         window_set_fullscreen(true)
-    } else {
-        window_set_fullscreen(false)
-        window_set_size(_target_w, _target_h)
-        window_center()
     }
 
-    // Keep the application surface at the authored resolution. GameMaker handles
-    // scaling to the actual window/display without changing gameplay coordinates.
-    if surface_exists(application_surface) {
-        surface_resize(application_surface, BASE_W, BASE_H)
-    }
+    // Record what was actually applied for the video screen and debugger.
+    global.appliedResolution = global.resolution
+    global.appliedFullscreen = global.fullscreen
+    global.videoDirty = false
 }

@@ -1,42 +1,89 @@
 #region Music Control
-// Randomize seed every launch
 randomize()
-
-// Create a music playlist
 playlist = [sndMazeDensityTime, sndAdhesiveWombatNightShade, sndKubbiDigestiveBiscuit]
-
-// Select a random song from the playlist array
 randSong = irandom_range(0, array_length(playlist) - 1)
 musicInstance = noone
 #endregion
 
-#region Debug Control
-show_debug_overlay(0)
+#region Presentation
+ui_time = 0
+ui_room_enter = 0
+ui_last_room = room
+debugEnabled = false
+debugRoom = ""
+debugWindow = ""
+debugSurface = ""
+debugFPS = 0
+debugInput = "KBM"
 
-dbg_view("System", false, 10, 30, 350, 410)
-	dbg_section("Globals", true)
-		dbg_text_input(ref_create(global, "languageIndex"), "Locale: ", "r")
-		dbg_slider(ref_create(global, "masterVolume"), 0, 1, "Master Volume: ", 0.01)
-		dbg_slider(ref_create(global, "musicVolume"), 0, 1, "Music Volume: ", 0.01)
-		dbg_slider(ref_create(global, "sfxVolume"), 0, 1, "SFX Volume: ", 0.01)
-		dbg_text_input(ref_create(global, "fullscreen"), "Fullscreen: ", "r")
-		dbg_drop_down(ref_create(global, "difficulty"), "Easy, Normal, Hard", "Difficulty: ")
-		dbg_text_input(ref_create(global, "input"), "Input: ", "r")
-	dbg_section("Delta", true)
-		dbg_text_input(ref_create(global, "deltaTarget"), "Target: ", "r")
-		dbg_text_input(ref_create(global, "deltaActual"), "Actual: ", "r")
-		dbg_text_input(ref_create(global, "deltaMulti"), "Multiplier: ", "r")
-	dbg_section("Game", true)
-		dbg_slider(ref_create(global, "gamespeed"), 0, 144, "Gamespeed: ", 1)
-		dbg_drop_down(ref_create(global, "profile"), "P1, P2, P3", "Profile: ")
-		save = function() {saveGame()}
-		dbg_button("Save", save, 40, 20)
-		dbg_same_line()
-		load = function() {loadGame()}
-		dbg_button("Load", load, 40, 20)
-		dbg_same_line()
-		quit = function() {game_end()}
-		dbg_button("Quit", quit, 40, 20)
+if !variable_global_exists("appliedResolution") global.appliedResolution = global.resolution
+if !variable_global_exists("appliedFullscreen") global.appliedFullscreen = global.fullscreen
+if !variable_global_exists("videoDirty") global.videoDirty = false
+#endregion
+
+#region Debug Control
+show_debug_overlay(false)
+
+applyVideoDebug = function() {
+    updateVideo()
+    saveGame()
+}
+
+toggleFullscreenDebug = function() {
+    global.fullscreen = !global.fullscreen
+    global.videoDirty = true
+}
+
+resetAudioDebug = function() {
+    global.masterVolume = MASTER_VOL
+    global.musicVolume = MUSIC_VOL
+    global.sfxVolume = SOUND_VOL
+}
+
+resetTemplateSettingsDebug = function() {
+    global.masterVolume = MASTER_VOL
+    global.musicVolume = MUSIC_VOL
+    global.sfxVolume = SOUND_VOL
+    global.fullscreen = FULLSCREEN
+    global.resolution = 2
+    global.difficulty = DIFFICULTY_EASY
+    updateVideo()
+    saveGame()
+}
+
+dbg_view("Template", true, 18, 40, 390, 650)
+    dbg_section("Runtime", true)
+        dbg_text_input(ref_create(self, "debugRoom"), "Room: ", "r")
+        dbg_text_input(ref_create(self, "debugFPS"), "FPS: ", "r")
+        dbg_text_input(ref_create(self, "debugInput"), "Input: ", "r")
+    dbg_section("Display", true)
+        dbg_drop_down(ref_create(global, "resolution"), "1280x720, 1600x900, 1920x1080, 2560x1440, 3840x2160", "Resolution: ")
+        dbg_text_input(ref_create(global, "fullscreen"), "Fullscreen: ", "r")
+        dbg_text_input(ref_create(self, "debugWindow"), "Window: ", "r")
+        dbg_text_input(ref_create(self, "debugSurface"), "Surface: ", "r")
+        dbg_button("Toggle Fullscreen", toggleFullscreenDebug, 120, 22)
+        dbg_same_line()
+        dbg_button("Apply Video", applyVideoDebug, 90, 22)
+    dbg_section("Audio", true)
+        dbg_slider(ref_create(global, "masterVolume"), 0, 1, "Master: ", 0.01)
+        dbg_slider(ref_create(global, "musicVolume"), 0, 1, "Music: ", 0.01)
+        dbg_slider(ref_create(global, "sfxVolume"), 0, 1, "SFX: ", 0.01)
+        dbg_button("Reset Audio", resetAudioDebug, 100, 22)
+    dbg_section("Game", true)
+        dbg_drop_down(ref_create(global, "difficulty"), "Easy, Normal, Hard", "Difficulty: ")
+        dbg_slider(ref_create(global, "gamespeed"), 1, 240, "Game Speed: ", 1)
+        dbg_drop_down(ref_create(global, "profile"), "P1, P2, P3", "Profile: ")
+    dbg_section("Actions", true)
+        save = function() {saveGame()}
+        dbg_button("Save", save, 60, 22)
+        dbg_same_line()
+        load = function() {loadGame()}
+        dbg_button("Load", load, 60, 22)
+        dbg_same_line()
+        dbg_button("Reset Settings", resetTemplateSettingsDebug, 110, 22)
+        dbg_same_line()
+        quit = function() {game_end()}
+        dbg_button("Quit", quit, 50, 22)
 #endregion
 
 #region Navigation Control
@@ -51,79 +98,54 @@ global.localeMap = ds_map_create()
 
 var _defaultLocaleCode = "en"
 var _defaultLocaleIndex = 0
-
 var _nativeLocaleCode = os_get_language()
 var _nativeLocaleIndex = 0
 
-// Find the first file matching the naming convention
 var _localeFileName = file_find_first("locale_*.json", 0)
 if _localeFileName == "" {
-	show_error("No locale files found!", 1)
-	return
+    show_error("No locale files found!", 1)
+    return
 }
 while _localeFileName != "" {
-	
-	show_debug_message("Loading locale file: " + _localeFileName)
-	
-	// Open file for reading
-	var _localeFile = file_text_open_read(_localeFileName)
-	if _localeFile == -1 {
-		show_error("Error reading locale file " + _localeFileName, 1)	
-	}
-	
-	// Build the JSON text
-	var _jsonStr = ""
-	var _j = 0
-	while !file_text_eof(_localeFile) {
-		_jsonStr += file_text_read_string(_localeFile)
-		file_text_readln(_localeFile)
-		_j++
-	}
-	file_text_close(_localeFile)
-	show_debug_message("Loaded locale_map from " + string(_j) + " lines of text.")
-	
-	// Convert JASON to DS Map
-	var _localeMap = json_decode(_jsonStr)
+    show_debug_message("Loading locale file: " + _localeFileName)
+    var _localeFile = file_text_open_read(_localeFileName)
+    if _localeFile == -1 show_error("Error reading locale file " + _localeFileName, 1)
 
-	if _localeMap == -1 or !ds_map_exists(_localeMap, "locale_code") {
-		show_error("Invalid locale data inside: " + _localeFileName, 1)
-		return
-	}
+    var _jsonStr = ""
+    var _j = 0
+    while !file_text_eof(_localeFile) {
+        _jsonStr += file_text_read_string(_localeFile)
+        file_text_readln(_localeFile)
+        _j++
+    }
+    file_text_close(_localeFile)
 
-	// Get the locale code from the locale data
-	var _localeCode = _localeMap[? "locale_code"]
-	ds_map_add(global.localeMap, _localeCode, _localeMap)
-	
-	// If this is the native locale, set the native locale index
-	if _localeCode == _nativeLocaleCode _nativeLocaleIndex = global.languageIndex
-	else if _localeCode == _defaultLocaleCode _defaultLocaleIndex = global.languageIndex
-	
-	// Add this locale code to the list of available locales
-	global.languages[global.languageIndex] = _localeCode
-	global.languageIndex++
-	
-	_localeFileName = file_find_next()
+    var _localeMap = json_decode(_jsonStr)
+    if _localeMap == -1 || !ds_map_exists(_localeMap, "locale_code") {
+        show_error("Invalid locale data inside: " + _localeFileName, 1)
+        return
+    }
+
+    var _localeCode = _localeMap[? "locale_code"]
+    ds_map_add(global.localeMap, _localeCode, _localeMap)
+
+    if _localeCode == _nativeLocaleCode _nativeLocaleIndex = global.languageIndex
+    else if _localeCode == _defaultLocaleCode _defaultLocaleIndex = global.languageIndex
+
+    global.languages[global.languageIndex] = _localeCode
+    global.languageIndex++
+    _localeFileName = file_find_next()
 }
 file_find_close()
 
-// Set the default locale to the player's native locale if possible
 if ds_map_exists(global.localeMap, _nativeLocaleCode) {
-	show_debug_message("Setting locale to native language.")
-	global.localeWords = global.localeMap[? _nativeLocaleCode]
-	global.languageIndex = _nativeLocaleIndex
+    global.localeWords = global.localeMap[? _nativeLocaleCode]
+    global.languageIndex = _nativeLocaleIndex
+} else if ds_map_exists(global.localeMap, _defaultLocaleCode) {
+    global.localeWords = global.localeMap[? _defaultLocaleCode]
+    global.languageIndex = _defaultLocaleIndex
+} else {
+    global.languageIndex = 0
+    global.localeWords = global.localeMap[? global.languages[0]]
 }
-// Otherwise set to English
-else if ds_map_exists(global.localeMap, _defaultLocaleCode) {
-	show_debug_message("Setting locale to default language.")
-	global.localeWords = global.localeMap[? _defaultLocaleCode]
-	global.languageIndex = _defaultLocaleIndex
-}
-// If all else fails, use the first language on the stack
-else {
-	show_debug_message("Setting locale to fallback language.")
-	global.languageIndex = 0
-	global.localeWords = global.localeMap[? global.languages[0]]
-}
-
-show_debug_message("Locale set to " + global.languages[global.languageIndex])
 #endregion

@@ -16,3 +16,4 @@ with (oResolutionList) {
 
 // Set global resolution position
 global.resolution = position
+global.videoDirty = true

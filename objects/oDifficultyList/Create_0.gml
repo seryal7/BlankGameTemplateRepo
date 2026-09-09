@@ -8,7 +8,7 @@ buttonText = locale("difficulty")
 diffList = [locale("easy"), locale("normal"), locale("hard")]
 
 // Default Selection
-position = 5
+position = clamp(global.difficulty, 0, array_length(diffList) - 1)
 
 // Default selection for controller navigation
 controllerHovered = true

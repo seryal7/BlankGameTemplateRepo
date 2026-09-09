@@ -1,5 +1,5 @@
 {
-  "$GMNotes":"",
+  "$GMNotes":"v1",
   "%Name":"game-icons.net license",
   "name":"game-icons.net license",
   "parent":{

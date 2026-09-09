@@ -5,9 +5,9 @@
 #macro Demo:DEMO_MODE true
 
 // Audio
-#macro MASTER_VOL 0.7
-#macro MUSIC_VOL 0.25
-#macro SOUND_VOL 0.9
+#macro MASTER_VOL 0.80
+#macro MUSIC_VOL 0.35
+#macro SOUND_VOL 0.80
 #macro Dev:MASTER_VOL 1.0
 #macro Dev:MUSIC_VOL 0.0
 #macro Dev:SOUND_VOL 0.0
@@ -29,7 +29,7 @@
 #macro VIEW_Y camera_get_view_y(VIEW)
 
 ///////////////////////////////// GUI
-#macro MENU_BUTTON_ALPHA 0.8
+#macro MENU_BUTTON_ALPHA 0.72
 // Font
 #macro DEFAULT_FONT "fUbuntu"
 #macro MENU_TITLE_SCALE 0.45
@@ -76,7 +76,7 @@ global.musicVolume = MUSIC_VOL
 
 // Video
 global.fullscreen = FULLSCREEN
-global.resolution = 5
+global.resolution = 2
 
 // Difficulty (Easy = 0, Normal = 1, Hard = 2)
 global.difficulty = DIFFICULTY_EASY

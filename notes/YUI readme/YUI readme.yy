@@ -1,5 +1,5 @@
 {
-  "$GMNotes":"",
+  "$GMNotes":"v1",
   "%Name":"YUI readme",
   "name":"YUI readme",
   "parent":{

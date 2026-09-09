@@ -1,28 +1,21 @@
-// Draw itself
-draw_self()
+var _track_h = 8
+var _yy = y - _track_h * 0.5
 
-// Draw part of the colored sprite to show value, and draw the button at the current location
-draw_sprite_part(
-	sprite_index, 
-	1, 
-	0, 
-	0, 
-	sprite_width * value, 
-	sprite_height, 
-	x, 
-	y - sprite_get_yoffset(sprite_index)
-)
-draw_sprite(sSliderButton, 0, x + sprite_width * value, y)
+// Track
+draw_set_alpha(0.72)
+draw_set_color(make_color_rgb(13, 17, 24))
+draw_rectangle(x, _yy, x + sprite_width, _yy + _track_h, false)
 
-if DEV_MODE {
-	var _tw = string_width("mouseSelected: " + string(mouseSelected))
-	var _th = string_height("mouseSelected: " + string(mouseSelected))
-	var _x = x + sprite_width / 2
-	var _y = y + sprite_height / 2
-	draw_set_color(c_black)
-	draw_rectangle(_x, _y, _x + _tw, _y + _th, false)
-	if mouseSelected draw_set_color(DEBUG_COLOR)
-	else draw_set_color(c_white)
-	draw_text(_x, _y, "mouseSelected: " + string(mouseSelected))
-	draw_set_color(c_white)
-}
+// Fill
+draw_set_alpha(1)
+draw_set_color(make_color_rgb(111, 160, 235))
+draw_rectangle(x, _yy, x + sprite_width * value, _yy + _track_h, false)
+
+// Thumb
+var _thumb_x = x + sprite_width * value
+draw_set_color(make_color_rgb(232, 238, 247))
+draw_circle(_thumb_x, y, 9, false)
+draw_set_color(make_color_rgb(111, 160, 235))
+draw_circle(_thumb_x, y, 5, false)
+
+draw_set_alpha(1)

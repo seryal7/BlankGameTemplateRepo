@@ -7,6 +7,7 @@ playlist = [sndMazeDensityTime, sndAdhesiveWombatNightShade, sndKubbiDigestiveBi
 
 // Select a random song from the playlist array
 randSong = irandom_range(0, array_length(playlist) - 1)
+musicInstance = noone
 #endregion
 
 #region Debug Control

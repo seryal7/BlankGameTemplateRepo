@@ -1,5 +1,5 @@
 {
-  "$GMNotes":"",
+  "$GMNotes":"v1",
   "%Name":"_yui_sprite_credits",
   "name":"_yui_sprite_credits",
   "parent":{

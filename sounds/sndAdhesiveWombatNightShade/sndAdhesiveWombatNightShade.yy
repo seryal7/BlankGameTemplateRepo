@@ -1,15 +1,17 @@
 {
-  "$GMSound":"",
+  "$GMSound":"v2",
   "%Name":"sndAdhesiveWombatNightShade",
   "audioGroupId":{
     "name":"agMusic",
     "path":"audiogroups/agMusic",
   },
   "bitDepth":1,
-  "bitRate":128,
+  "channelFormat":0,
   "compression":0,
+  "compressionQuality":4,
   "conversionMode":0,
   "duration":411.50403,
+  "exportDir":"",
   "name":"sndAdhesiveWombatNightShade",
   "parent":{
     "name":"Music",
@@ -20,6 +22,5 @@
   "resourceVersion":"2.0",
   "sampleRate":44100,
   "soundFile":"sndAdhesiveWombatNightShade.wav",
-  "type":0,
   "volume":0.34,
 }

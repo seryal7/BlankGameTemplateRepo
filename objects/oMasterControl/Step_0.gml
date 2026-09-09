@@ -16,30 +16,27 @@ game_set_speed(global.gamespeed, gamespeed_fps)
 #endregion
 
 #region Music Control
-// Update master and music volumes
+// Mixer owns volume. Individual sounds are played at unity gain to avoid double scaling.
 audio_master_gain(global.masterVolume)
-if audio_group_is_loaded(agSoundFX) audio_group_set_gain(agSoundFX, global.sfxVolume, 1)
+if audio_group_is_loaded(agSoundFX) audio_group_set_gain(agSoundFX, global.sfxVolume, 0)
 if audio_group_is_loaded(agMusic) {
-	
-	// Update music volume
-	audio_group_set_gain(agMusic, global.musicVolume, 1)
+    audio_group_set_gain(agMusic, global.musicVolume, 0)
 
-	// Check if there music is not playing, then start background music
-	if !audio_is_playing(playlist[randSong]) {
-		randSong = irandom_range(0, array_length(playlist) - 1)
-		var _music = audio_play_sound(playlist[randSong], 1, false)
-		audio_sound_gain(_music, global.musicVolume, 0)
-	}
-	
-	// Pause music if it's still playing when game window is not in focus
-	if !window_has_focus() and !audio_is_paused(playlist[randSong]) {
-		audio_pause_sound(playlist[randSong])
-	}
-	
-	// Resume music once the window is controllerHovered again 
-	if window_has_focus() and audio_is_paused(playlist[randSong]) {
-		audio_resume_sound(playlist[randSong])
-	}
+    if musicInstance == noone || !audio_is_playing(musicInstance) {
+        var _previous = randSong
+        if array_length(playlist) > 1 {
+            repeat (8) {
+                randSong = irandom_range(0, array_length(playlist) - 1)
+                if randSong != _previous break
+            }
+        }
+        musicInstance = audio_play_sound(playlist[randSong], 1, false)
+    }
+
+    if musicInstance != noone {
+        if !window_has_focus() && !audio_is_paused(musicInstance) audio_pause_sound(musicInstance)
+        if window_has_focus() && audio_is_paused(musicInstance) audio_resume_sound(musicInstance)
+    }
 }
 #endregion
 

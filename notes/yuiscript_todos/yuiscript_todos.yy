@@ -1,5 +1,5 @@
 {
-  "$GMNotes":"",
+  "$GMNotes":"v1",
   "%Name":"yuiscript_todos",
   "name":"yuiscript_todos",
   "parent":{

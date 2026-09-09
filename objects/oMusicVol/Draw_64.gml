@@ -1,4 +1,7 @@
-// Inherit the parent event
-event_inherited();
-
-if muted draw_sprite(sMute, 0, x + (sprite_width / 2), y + (sprite_height / 2))
+event_inherited()
+draw_set_halign(fa_left)
+draw_set_valign(fa_middle)
+draw_set_color(make_color_rgb(210, 216, 228))
+draw_text(x + sprite_width * 0.5 + 470, y, string(round(global.musicVolume * 100)) + "%")
+draw_set_halign(fa_left)
+draw_set_valign(fa_top)

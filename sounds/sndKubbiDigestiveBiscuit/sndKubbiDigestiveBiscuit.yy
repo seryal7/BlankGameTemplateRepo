@@ -1,15 +1,17 @@
 {
-  "$GMSound":"",
+  "$GMSound":"v2",
   "%Name":"sndKubbiDigestiveBiscuit",
   "audioGroupId":{
     "name":"agMusic",
     "path":"audiogroups/agMusic",
   },
   "bitDepth":1,
-  "bitRate":128,
+  "channelFormat":0,
   "compression":0,
+  "compressionQuality":4,
   "conversionMode":0,
   "duration":97.01297,
+  "exportDir":"",
   "name":"sndKubbiDigestiveBiscuit",
   "parent":{
     "name":"Music",
@@ -20,6 +22,5 @@
   "resourceVersion":"2.0",
   "sampleRate":44100,
   "soundFile":"sndKubbiDigestiveBiscuit.wav",
-  "type":0,
   "volume":0.29,
 }

@@ -43,14 +43,15 @@ function loadGame() {
 		global.masterVolume = _struct.masterVol
 		global.musicVolume = _struct.musicVol
 		global.sfxVolume = _struct.soundVol
-		global.resolution = _struct.resolution
+		global.resolution = clamp(_struct.resolution, 0, 4)
 		global.fullscreen = _struct.fullscreen
 		global.difficulty = _struct.difficulty
 		input_player_import(_struct.controls)
 		
 		file_text_close(_file)
 		
-		// Update language settings after load
+		// Update language and display settings after load
 		loadLang(global.languageIndex)
+		updateVideo()
 	}
 }

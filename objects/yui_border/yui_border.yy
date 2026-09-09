@@ -34,12 +34,12 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"bg_sprite","filters":[
+    {"$GMObjectProperty":"v2","%Name":"bg_sprite","filters":[
         "GMSprite",
       ],"listItems":[],"multiselect":false,"name":"bg_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"undefined","varType":5,},
-    {"$GMObjectProperty":"v1","%Name":"border_color","filters":[],"listItems":[],"multiselect":false,"name":"border_color","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":7,},
-    {"$GMObjectProperty":"v1","%Name":"border_thickness","filters":[],"listItems":[],"multiselect":false,"name":"border_thickness","rangeEnabled":true,"rangeMax":5.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"border_alpha","filters":[],"listItems":[],"multiselect":false,"name":"border_alpha","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"border_color","filters":[],"listItems":[],"multiselect":false,"name":"border_color","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":7,},
+    {"$GMObjectProperty":"v2","%Name":"border_thickness","filters":[],"listItems":[],"multiselect":false,"name":"border_thickness","rangeEnabled":true,"rangeMax":5.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"border_alpha","filters":[],"listItems":[],"multiselect":false,"name":"border_alpha","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

@@ -1,65 +1,34 @@
 function updateVideo() {
-	var _width, _height
-	switch (global.resolution) {
-		case 0:
-		_width = 800
-		_height = 480
-		break
-	
-		case 1:
-		_width = 1024
-		_height = 768
-		break
-	
-		case 2:
-		_width = 1280
-		_height = 720
-		break
-	
-		case 3:
-		_width = 1366
-		_height = 768
-		break
-	
-		case 4:
-		_width = 1600
-		_height = 900
-		break
-	
-		case 5:
-		_width = 1920
-		_height = 1080
-		break
-	}
+    var _sizes = [
+        [1280, 720],
+        [1600, 900],
+        [1920, 1080],
+        [2560, 1440],
+        [3840, 2160]
+    ]
 
-	global.width = _width
-	global.height = _height
-	if global.fullscreen == false window_set_fullscreen(false)
-	else if global.fullscreen == true window_set_fullscreen(true)
-	
-	// Set the resolution to display, or get this value from the device
-	var _displayWidth = global.width
-	var _displayHeight = global.height
+    global.resolution = clamp(global.resolution, 0, array_length(_sizes) - 1)
 
-	// Set the size of GUI
-	// display_set_gui_size(_displayWidth, _displayHeight)
+    var _target_w = _sizes[global.resolution][0]
+    var _target_h = _sizes[global.resolution][1]
 
-	// Set the size of the game window
-	window_set_size(_displayWidth, _displayHeight)
+    global.width = _target_w
+    global.height = _target_h
 
-	// Set the resolution
-	var _baseWidth = 1920
-	var _baseHeight = 1080
+    // The game always renders against the same 1920x1080 UI/game coordinate space.
+    display_set_gui_size(BASE_W, BASE_H)
 
-	// Determine aspect ratio
-	var _aspect = _baseWidth / _baseHeight
+    if global.fullscreen {
+        window_set_fullscreen(true)
+    } else {
+        window_set_fullscreen(false)
+        window_set_size(_target_w, _target_h)
+        window_center()
+    }
 
-	// Work out the adjusted height and width
-	if (_displayWidth >= _displayHeight) {
-		var _height = min(_baseHeight, _displayHeight)
-		var _width = _height * _aspect
-	}
-
-	// Resize application surface
-	surface_resize(application_surface, _width, _height)
+    // Keep the application surface at the authored resolution. GameMaker handles
+    // scaling to the actual window/display without changing gameplay coordinates.
+    if surface_exists(application_surface) {
+        surface_resize(application_surface, BASE_W, BASE_H)
+    }
 }

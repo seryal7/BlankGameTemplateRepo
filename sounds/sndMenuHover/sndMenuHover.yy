@@ -1,15 +1,17 @@
 {
-  "$GMSound":"",
+  "$GMSound":"v2",
   "%Name":"sndMenuHover",
   "audioGroupId":{
     "name":"agSoundFX",
     "path":"audiogroups/agSoundFX",
   },
   "bitDepth":1,
-  "bitRate":128,
+  "channelFormat":0,
   "compression":0,
+  "compressionQuality":4,
   "conversionMode":0,
   "duration":0.305011,
+  "exportDir":"",
   "name":"sndMenuHover",
   "parent":{
     "name":"SFX",
@@ -20,6 +22,5 @@
   "resourceVersion":"2.0",
   "sampleRate":44100,
   "soundFile":"sndMenuHover.wav",
-  "type":0,
   "volume":1.0,
 }
